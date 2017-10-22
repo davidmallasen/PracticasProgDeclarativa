@@ -1,4 +1,4 @@
-digito :: Integral a => a -> a
+digito :: [Int] -> Int
 digito x = digito' x 0 where
 	digito' 0 n = n
 	digito' x n = digito' (x `div` 10) (n + 1)
