@@ -107,6 +107,7 @@ equivalentes (f:fs) =
 
 -- Menu: Pequenya interaccion con el usuario. Pide al usuario que introduzca las formulas, se pide
     -- en un sencillo menu que quiere hacer con ellas y se muestra el resultado de lo pedido.
+menu :: IO ()
 menu =
     do  putStrLn "=== OPERACIONES LOGICA PROPOSICIONAL ==="
         fs <- getFormulas
@@ -123,6 +124,9 @@ menu =
         opc <- getInt
         procesarMenu opc fs
 
+-- procesarMenu: Procesa la opcion recibida del menu con las formulas que se han pedido 
+    -- previamente al ususario.
+procesarMenu :: (Eq a, Num a) => a -> [FProp] -> IO ()
 procesarMenu 0 fs = putStrLn "Saliendo..."
 procesarMenu opc [] = putStrLn "Error. Escriba al menos una formula en la lista!"
 procesarMenu opc (f:fs)
@@ -168,14 +172,14 @@ evalua (O x y) xs     = or [(evalua x xs), (evalua y xs)]
 evalua (Si x y) xs    = if (evalua x xs) then (evalua y xs) else True
 evalua (Sii x y) xs   = (evalua x xs) == (evalua y xs)
 
--- Pide al usuario una lista de formulas y las devuelve
+-- getFormulas: Pide al usuario una lista de formulas y las devuelve
 getFormulas :: IO [FProp]
 getFormulas = 
     do  putStr "Escribe una lista de formulas: "
         f <- getLine
         return (read f::[FProp])
 
--- Lee un entero. Funcion extraida de las diapositivas de clase.
+-- getInt: Lee un entero. Funcion extraida de las diapositivas de clase.
 getInt :: IO Int 
 getInt = do line <- getLine
             return (read line::Int)
